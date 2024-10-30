@@ -6,31 +6,35 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class ListTreeDirectory {
-    public void listDirectoryTree(String directoryPath) {
+    public String listDirectoryTree(String directoryPath) {
         File directory = new File(directoryPath);
-        if (!directory.isDirectory()) 
-            System.out.println("Format de ruta incorrecte.");
-        else
-            listDirectoryContents(directory, 0);
+        if (!directory.isDirectory()) {
+            return "Format de ruta incorrecte.";
+        }
+        StringBuilder result = new StringBuilder();
+        listDirectoryContents(directory, 0, result);
+        return result.toString();
     }
 
-    private void listDirectoryContents(File directory, int level) {
+    private void listDirectoryContents(File directory, int level, StringBuilder result) {
         File[] files = directory.listFiles();
         if (files != null) {
             Arrays.sort(files);
             for (File file : files) {
-                printFileInfo(file, level);
+                appendFileInfo(file, level, result);
                 if (file.isDirectory()) {
-                    listDirectoryContents(file, level + 1);
+                    listDirectoryContents(file, level + 1, result);
                 }
             }
         }
     }
 
-    private void printFileInfo(File file, int level) {
+    private void appendFileInfo(File file, int level, StringBuilder result) {
         String type = file.isDirectory() ? "D" : "F";
-        String lastModified = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(file.lastModified()));
+        String lastModified = new SimpleDateFormat("dd-MM-yyyy").format(new Date(file.lastModified()));
         String indent = "  ".repeat(level);
-        System.out.println(indent + type + " " + file.getName() + " (Last Modified: " + lastModified + ")");
+        result.append(indent).append(type).append(" ").append(file.getName())
+                .append(" (Ultima modificacio: ").append(lastModified).append(")\n");
     }
 }
+
