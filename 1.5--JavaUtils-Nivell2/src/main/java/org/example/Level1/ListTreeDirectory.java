@@ -8,7 +8,7 @@ import java.util.Date;
 public class ListTreeDirectory {
     public String listDirectoryTree(String directoryPath) {
         File directory = new File(directoryPath);
-        if (!directory.isDirectory()) {
+        if (!directory.isDirectory() || !directory.canRead()) {
             return "Format de ruta incorrecte.";
         }
         StringBuilder result = new StringBuilder();
@@ -18,7 +18,7 @@ public class ListTreeDirectory {
 
     private void listDirectoryContents(File directory, int level, StringBuilder result) {
         File[] files = directory.listFiles();
-        if (files != null) {
+        if (files != null && files.length > 0) {
             Arrays.sort(files);
             for (File file : files) {
                 appendFileInfo(file, level, result);

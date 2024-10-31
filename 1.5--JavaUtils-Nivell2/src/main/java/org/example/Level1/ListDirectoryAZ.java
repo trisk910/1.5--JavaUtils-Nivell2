@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class ListDirectoryAZ {
     public void listDirectory(String directoryPath) {
         File directory = new File(directoryPath);
-        if (!directory.isDirectory()) {
+        if (!directory.isDirectory() || !directory.canRead()) {
             System.out.println("Format de ruta incorrecte.");
         }else {
             String[] files = directory.list();
